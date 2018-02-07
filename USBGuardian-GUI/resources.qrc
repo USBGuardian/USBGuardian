@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/resources">
+        <file>assets/USBGuardian.png</file>
+        <file>assets/sensi-1.png</file>
+        <file>assets/sensi-2.png</file>
+        <file>assets/icons/cancel.png</file>
+        <file>assets/icons/check.png</file>
+        <file>assets/icons/danger.png</file>
+        <file>assets/icons/info.png</file>
+        <file>assets/icons/power.png</file>
+        <file>assets/icons/warning.png</file>
+        <file>assets/sensi-3.png</file>
+        <file>assets/step1.png</file>
+        <file>assets/step2.png</file>
+        <file>assets/step3.png</file>
+    </qresource>
+</RCC>

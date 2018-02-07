@@ -1,0 +1,7 @@
+Number of devices scanned: 0
+Number of malwares detected: 0
+Number of files scanned: 0
+% of infected devices: 0
+Average time of scan: 0
+Number of infected devices: 0
+Total time of scan: 0
