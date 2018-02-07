@@ -1,12 +1,12 @@
 
 # How to use
-Please download the following user manul explaining how to use the station:
+Please download the following user manual explaining how to use the station:
 
 https://usbguardian.wordpress.com/documentation/
 
 # Where to download
 ## Pre-build image
-You can download the prebuild image here:
+You can download the pre-built image here:
 
 https://usbguardian.wordpress.com/documentation/
 
