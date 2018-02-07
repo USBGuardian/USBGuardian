@@ -25,10 +25,11 @@ Now you can copy the image to the SD card using dd:
 ```
 dd bs=1M if=2018-02-07_USBGuardian.img of=/dev/sdX
 ```
-* On Windows
+* On Windows:
 As recommended by the RaspberryPi, use the Win32DiskImager utility to copy the file image to the SD card. You can also use dd for Windows.
 
 Now, you’re ready to go! Just insert your SD card into the Raspberry Pi and set it on!
 
 # How it works
 We also created a document explaining how to recreate this software step by step:
+https://usbguardian.wordpress.com/documentation/
