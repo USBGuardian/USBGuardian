@@ -10,25 +10,15 @@ You can download the pre-built image here:
 
 https://usbguardian.wordpress.com/documentation/
 
-While copying the pre-built image, make sure the destination disk is the SD card and not your disk.
+You will need to use an image writing tool to install the image you have downloaded on your SD card.
 
-* On Linux:
-Find the raw disk identifying your SD card (something like /dev/sdX1 where X is a character):
-```
-df -h
-```
-The disk is most probably mounted and needs to be unmounted before the copy:
-```
-umount /dev/sdX1
-```
-Now you can copy the image to the SD card using dd:
-```
-dd bs=1M if=2018-02-07_USBGuardian.img of=/dev/sdX
-```
-* On Windows:
-As recommended by the RaspberryPi, use the Win32DiskImager utility to copy the file image to the SD card. You can also use dd for Windows.
+Etcher is a graphical SD card writing tool that works on Mac OS, Linux and Windows, and is the easiest option for most users. Etcher also supports writing images directly from the zip file, without any unzipping required. To write your image with Etcher:
 
-Now, you’re ready to go! Just insert your SD card into the Raspberry Pi and set it on!
+Download Etcher and install it.
+Connect an SD card reader with the SD card inside.
+Open Etcher and select from your hard drive the Raspberry Pi .img file you wish to write to the SD card.
+Select the SD card you wish to write your image to.
+Review your selections and click ‘Flash!’ to begin writing data to the SD card.
 
 # How it works
 We also created a document explaining how to recreate this software step by step:
