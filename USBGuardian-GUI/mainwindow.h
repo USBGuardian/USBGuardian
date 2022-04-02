@@ -42,7 +42,6 @@ private slots:
     void switchImgSlider();
     void on_btn_cancel_analyze_clicked();
     void exceptionMessageUsbRemoved();
-    void keyPressEvent(QKeyEvent *event);
 	
     void on_btn_close_exceptionView_clicked();
 
@@ -54,6 +53,7 @@ private:
     void loadReportView(const QString &path);
     void analyzeReport(const QString &path);
     void confirmDeviceRestart();
+    void runGuardianShellScript(const QString &scriptName);
     QProcess *process;
     Details *details;
     int imgSliderId;

@@ -1,4 +1,4 @@
-﻿ #include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QThread>
 #include <QFileSystemWatcher>
@@ -8,6 +8,8 @@
 #include <QStorageInfo>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QTextStream>
+#include <QRegularExpression>
 
 #include "details.h"
 
@@ -56,7 +58,7 @@ void MainWindow::switchImgSlider()
 // Read the file statistics.txt and show data in the Information view
 void MainWindow::loadInformationView(const QString &path)
 {
-    process->start("clamscan --version");
+    process->start("clamscan", QStringList() << "--version");
     process->waitForFinished();
     ui->label_databaseVersion_value->setText(process->readAllStandardOutput());
 
@@ -144,7 +146,7 @@ void MainWindow::analyzeReport(const QString &path)
         ui->stackedWidget->setCurrentIndex(1);
         // everytime the script progress print on stdout start the function processProgOutput()
         connect(processProg, SIGNAL(readyReadStandardOutput()), this, SLOT(processProgOutput()));
-        processProg->start("/opt/USBGuardian/scripts/progress.sh");
+        processProg->start("/opt/USBGuardian/scripts/progress.sh", QStringList());
     }
 }
 // Show the view depending on the result of analysis OK or Malware found
@@ -205,9 +207,7 @@ void MainWindow::loadReportView(const QString &path)
 void MainWindow::processProgOutput(){
     QString fileOkPercentage = processProg->readAllStandardOutput();
     if (fileOkPercentage.contains("USB Removed") || fileOkPercentage.contains("No such file or directory")){
-        QProcess process;
-        process.start("/opt/USBGuardian/scripts/ejectUSB.sh");
-        process.waitForFinished();
+        runGuardianShellScript("ejectUSB");
         // show error view saying that usb was removed during clamav scan
         exceptionMessageUsbRemoved();
         return;
@@ -219,7 +219,7 @@ void MainWindow::processProgOutput(){
         ui->progressBar->setValue(fileOkPercentage.toInt());
         if (ui->progressBar->value() >= 99 && scanDone == false){
             scanDone = true;
-            processProg->close()
+            processProg->close();
         }
     }
 }
@@ -270,8 +270,7 @@ void MainWindow::confirmDeviceRestart()
     int exec = messageBox.exec();
     switch (exec) {
     case QMessageBox::Yes:
-        process->start("/opt/USBGuardian/scripts/reboot.sh");
-        process->waitForFinished();
+        runGuardianShellScript("reboot");
         break;
     case QMessageBox::Cancel:
         break;
@@ -306,8 +305,8 @@ void MainWindow::removeVirus(){
     scanDone = false;
     removeAction = true;
     QProcess pScan;
-    pScan.startDetached("python3 /opt/USBGuardian/scripts/scanAndRemove.py");
-    processProg->start("/opt/USBGuardian/scripts/progress.sh");
+    pScan.startDetached("python3 /opt/USBGuardian/scripts/scanAndRemove.py", QStringList());
+    processProg->start("/opt/USBGuardian/scripts/progress.sh", QStringList());
 }
 
 void MainWindow::on_btnFormat_clicked()
@@ -332,7 +331,7 @@ void MainWindow::on_btnFormat_clicked()
 
 void MainWindow::formatUSB(){
     QProcess pFormat;
-    pFormat.start("python3 /opt/USBGuardian/scripts/formatUSB.py");
+    pFormat.start("python3 /opt/USBGuardian/scripts/formatUSB.py", QStringList());
     pFormat.waitForFinished();
     QMessageBox messageBox;
     messageBox.setText("Your USB drive have been successfully formatted.");
@@ -347,6 +346,13 @@ void MainWindow::formatUSB(){
     }
 }
 
+void MainWindow::runGuardianShellScript(const QString &scriptName)
+{
+    QProcess process;
+    process.start("/opt/USBGuardian/scripts/" + scriptName + ".sh", QStringList());
+    process.waitForFinished();
+}
+
 void MainWindow::on_btnShowInfectedFiles_clicked()
 {
     QString report = readFile("/opt/USBGuardian/logs/report.log");
@@ -355,9 +361,7 @@ void MainWindow::on_btnShowInfectedFiles_clicked()
 }
 
 void MainWindow::ejectUSB(){
-    QProcess process;
-    process.start("/opt/USBGuardian/scripts/ejectUSB.sh");
-    process.waitForFinished();
+    runGuardianShellScript("ejectUSB");
     ui->stackedWidget->setCurrentIndex(2);
     QTimer::singleShot(5000, this, SLOT(gotoHomeView() ));
 }
